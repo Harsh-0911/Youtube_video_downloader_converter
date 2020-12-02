@@ -3,6 +3,7 @@ print('Loading...')
 
 import pytube
 import video_downloader
+import file_converter
 
 print('''
     [+] 1. Download Videos Manually .
@@ -25,9 +26,13 @@ if (choice == '1' or choice == '2'):
         for link in links:
             video_downloader.download_video(link, quality)
 
-elif (choice == '3'):
-    print('Work In Progress')
-    print('Available Soon...')
+elif choice == "3":
+    links = video_downloader.input_links()
+    for link in links:
+        print("Downloading...")
+        filename = video_downloader.download_video(link, 'low')
+        print("Converting...")
+        file_converter.convert_to_mp3(filename)
 
 else:
     print('You\'ve Entered Invalid Input!')
