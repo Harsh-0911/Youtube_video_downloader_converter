@@ -33,12 +33,13 @@ elif choice == "3":
     links = video_downloader.input_links()
     destination_path = input('Enter destination path: ')
     for link in links:
-        filename = video_downloader.download_video(
+        filename, flag = video_downloader.download_video(
             link, 'low', destination_path)
-        print("[+] Converting to mp3")
-        file_converter.convert_to_mp3(destination_path, filename)
-        os.remove(os.path.join(destination_path, filename))
-
+        if not flag:
+            print("[+] Converting to mp3")
+            file_converter.convert_to_mp3(destination_path, filename)
+            os.remove(os.path.join(destination_path, filename))
+            
 else:
     print('You\'ve Entered Invalid Input!')
     print('Terminating Script...')

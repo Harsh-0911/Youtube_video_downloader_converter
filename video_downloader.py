@@ -71,14 +71,24 @@ def download_video(link, quality, destination_path):
     '''
     video_object = pytube.YouTube(link)
     video_itag = choose_quality(quality)
+    skip_or_not = False
     stream = video_object.streams.get_by_itag(video_itag)
     if (stream is None):
-        stream = video_object.streams.get_by_itag(18)
+        stream = video_object.streams.get_by_itag(160)
+        if (stream is None):
+            stream = video_object.streams.get_by_itag(133)
+            if (stream is None):
+                stream = video_object.streams.get_by_itag(18)
     print(f'[+] Downloading.. -  {video_object.title}')
-    stream.download(destination_path)
-    print(f'[+] Completed - {video_object.title}')
+    try:
+        stream.download(destination_path)
+        print(f'[+] Completed - {video_object.title}')
+        return stream.default_filename, skip_or_not
+    except:
+        print('Could not find audio format.')
+        skip_or_not = True
+        return None, skip_or_not
 
-    return stream.default_filename
 
 
 def download_videos(urls, quality, destination_path):
